@@ -17,64 +17,63 @@ import {Preferences} from 'mattermost-redux/constants';
 
 // @ts-ignore
 const {formatText, messageHtmlToComponent} = window.PostUtils;
+
 // @ts-ignore
 const WebappUtils = window.WebappUtils;
-
-type Props = {
-    post: Post,
-    team: Team,
-}
 
 const PostView = styled.div`
     display: flex;
     align-items: flex-start;
     font-size: 0.9em;
     padding: 5px;
-`
-
+`;
 const PostIconView = styled.div`
     flex-basis: 37px;
     min-width: 37px;
     padding-right: 2px;
-`
+`;
 const PostIcon = styled.img`
     height: 32px;
     width: 32px;
     border-radius: 50%;
-`
-
+`;
 const PostContentsView = styled.div`
     flex-basis: auto;
     max-height: 300px;
-`
-
+`;
 const PostHeaderUser = styled.span`
     font-size: 1.2em;
     font-weight: bold;
-`
+`;
 const PostHeaderTime = styled.span`
     opacity: 0.5;
     margin-left: 5px;
     margin-right: 15px;
-`
+`;
 const PostContentsBody = styled.div`
     padding-top: 4px;
     max-height: 265px;
     overflow: hidden;
     while-space: nowrap;
     text-overflow: ellipsis;
-`
+`;
 
 const handleJumpClick = (teamName: string, postId: string) => {
     return (e: any) => {
         e.preventDefault();
         WebappUtils.browserHistory.push(`/${teamName}/pl/${postId}`);
-    }
+    };
+};
+
+interface Props {
+    post: Post;
+    team: Team;
 }
 
-const UnreadPost: FC<Props> = ({post, team}) => {
+const UnreadPost: FC<Props> = (props: Props) => {
+    const {post, team} = props;
     const currentUserId = useSelector<GlobalState, string>(getCurrentUserId);
-    const currentUser = useSelector<GlobalState, UserProfile>(state => getUser(state, currentUserId));
+    const currentUser = useSelector<GlobalState, UserProfile>((state) => getUser(state, currentUserId));
     let teammateNameSetting = useSelector<GlobalState, string|undefined>(getTeammateNameDisplaySetting);
     if (!teammateNameSetting) {
         teammateNameSetting = '';
@@ -84,8 +83,7 @@ const UnreadPost: FC<Props> = ({post, team}) => {
         tz = '';
     }
 
-
-    const isMilitary = useSelector<GlobalState, boolean>(state => getBool(state,Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.USE_MILITARY_TIME));
+    const isMilitary = useSelector<GlobalState, boolean>((state) => getBool(state, Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.USE_MILITARY_TIME));
     let timeFormat = isMilitary ? 'HH:mm' : 'p';
 
     // TODO: this will cause always re-render. it should be to introduce date separator.
@@ -94,11 +92,11 @@ const UnreadPost: FC<Props> = ({post, team}) => {
         end: utcToZonedTime(Date.now(), tz),
     });
     if (interval.days && interval.days > 0) {
-        timeFormat = `PP ${timeFormat}`
+        timeFormat = `PP ${timeFormat}`;
     }
     const createdAt = format(utcToZonedTime(post.create_at, tz), timeFormat, {timeZone: tz});
 
-    const user = useSelector<GlobalState, UserProfile>(state => getUser(state, post.user_id));
+    const user = useSelector<GlobalState, UserProfile>((state) => getUser(state, post.user_id));
     const profileUri = Client4.getProfilePictureUrl(user.id, user.last_picture_update);
     const username = displayUsername(user, teammateNameSetting!);
 
@@ -110,10 +108,10 @@ const UnreadPost: FC<Props> = ({post, team}) => {
                 mentionsHighlight: true,
                 atMentions: true,
                 team,
-            }
+            },
         ),
         true, // isRHS
-        {}
+        {},
     );
 
     // TODO: show custom status
@@ -128,7 +126,12 @@ const UnreadPost: FC<Props> = ({post, team}) => {
                     <div>
                         <PostHeaderUser>{username}</PostHeaderUser>
                         <PostHeaderTime>{createdAt}</PostHeaderTime>
-                        <a href='#' onClick={handleJumpClick(team.name, post.id)}>Jump</a>
+                        <a
+                            href='#'
+                            onClick={handleJumpClick(team.name, post.id)}
+                        >
+                            {'Jump'}
+                        </a>
                     </div>
                     <PostContentsBody>
                         {formattedText}
@@ -136,7 +139,7 @@ const UnreadPost: FC<Props> = ({post, team}) => {
                 </PostContentsView>
             </PostView>
         </>
-    )
-}
+    );
+};
 
 export default UnreadPost;
