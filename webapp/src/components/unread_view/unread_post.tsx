@@ -8,6 +8,8 @@ import {GlobalState} from 'mattermost-redux/types/store';
 import {UserProfile} from 'mattermost-redux/types/users';
 import {getUser} from 'mattermost-redux/selectors/entities/users';
 import {Team} from 'mattermost-redux/types/teams';
+import {getTeammateNameDisplaySetting} from 'mattermost-redux/selectors/entities/preferences';
+import {displayUsername} from 'mattermost-redux/utils/user_utils';
 
 // @ts-ignore
 const {formatText, messageHtmlToComponent} = window.PostUtils;
@@ -62,6 +64,13 @@ const handleJumpClick = (teamName: string, postId: string) => {
 
 const UnreadPost: FC<Props> = ({post, team}) => {
     const user = useSelector<GlobalState, UserProfile>(state => getUser(state, post.user_id));
+
+    let teammateNameSetting = useSelector<GlobalState, string|undefined>(getTeammateNameDisplaySetting);
+    if (!teammateNameSetting) {
+        teammateNameSetting = '';
+    }
+    const username = displayUsername(user, teammateNameSetting!);
+
     const profileUri = Client4.getProfilePictureUrl(user.id, user.last_picture_update);
 
     const formattedText = messageHtmlToComponent(
@@ -89,7 +98,7 @@ const UnreadPost: FC<Props> = ({post, team}) => {
                 </PostIconView>
                 <PostContentsView>
                     <div>
-                        <PostHeaderUser>{user.username}</PostHeaderUser>
+                        <PostHeaderUser>{username}</PostHeaderUser>
                         <PostHeaderTime>{post.create_at}</PostHeaderTime>
                         <a href='#' onClick={handleJumpClick(team.name, post.id)}>Jump</a>
                     </div>
