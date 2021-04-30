@@ -22,12 +22,13 @@ type Props = {
 const PostView = styled.div`
     display: flex;
     align-items: flex-start;
-    font-size: 0.8em;
+    font-size: 0.9em;
     padding: 5px;
 `
 
 const PostIconView = styled.div`
     flex-basis: 37px;
+    min-width: 37px;
     padding-right: 2px;
 `
 const PostIcon = styled.img`
@@ -36,7 +37,9 @@ const PostIcon = styled.img`
     border-radius: 50%;
 `
 
-const PostContentsView = styled.div``
+const PostContentsView = styled.div`
+    flex-basis: auto;
+`
 
 const PostHeaderUser = styled.span`
     font-size: 1.2em;
@@ -45,6 +48,9 @@ const PostHeaderUser = styled.span`
 const PostHeaderTime = styled.span`
     opacity: 0.5;
     margin: 0px 2px;
+`
+const PostContentsBody = styled.div`
+    padding-top: 4px;
 `
 
 const handleJumpClick = (teamName: string, postId: string) => {
@@ -85,9 +91,9 @@ const UnreadPost: FC<Props> = ({post, team}) => {
                         <PostHeaderTime>{post.create_at}</PostHeaderTime>
                         <a href='#' onClick={handleJumpClick(team.name, post.id)}>Jump</a>
                     </div>
-                    <div>
+                    <PostContentsBody>
                         {formattedText}
-                    </div>
+                    </PostContentsBody>
                 </PostContentsView>
             </PostView>
         </>

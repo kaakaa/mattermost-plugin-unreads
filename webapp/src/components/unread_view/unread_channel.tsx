@@ -17,6 +17,8 @@ import UnreadPost from 'components/unread_view/unread_post';
 
 // @ts-ignore
 const WebappUtils = window.WebappUtils;
+// @ts-ignore
+const {OverlayTrigger, Tooltip} = window.ReactBootstrap;
 
 type Props = {
     channelId: string
@@ -81,16 +83,25 @@ const UnreadChannel: FC<Props> = ({channelId}) => {
         );
     }
 
-    // TODO: tooltip for markAsRead icon
     return (
         <>
             <UnreadChannelContent>
                 <ChannelHeader>
                     <ChannelHeaderTitle>{channel.display_name}</ChannelHeaderTitle>
                     <ChannelHeaderDescription>{`(${unreadCount} messages)`}</ChannelHeaderDescription>
-                    <a href='#' onClick={(markAsRead)}>
-                        <ChannelHeaderIconMenu className='icon fa fa-check-square'></ChannelHeaderIconMenu>
-                    </a>
+                    <OverlayTrigger
+                        key={channel.id}
+                        placement={'bottom'}
+                        overlay={
+                            <Tooltip id={`tooltip-bottom`}>
+                                Mark as read
+                            </Tooltip>
+                        }
+                    >
+                        <a href='#' onClick={(markAsRead)}>
+                            <ChannelHeaderIconMenu className='icon fa fa-check-square'></ChannelHeaderIconMenu>
+                        </a>
+                    </OverlayTrigger>
                 </ChannelHeader>
                 {posts.map((p) => {
                     var post = p as Post;
