@@ -1,23 +1,22 @@
 import React, {FC} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import styled from 'styled-components';
 
 import {Client4} from 'mattermost-redux/client';
 import {Post} from 'mattermost-redux/types/posts';
 import {GlobalState} from 'mattermost-redux/types/store';
-import {Team} from 'mattermost-redux/types/teams';
 import {UserProfile} from 'mattermost-redux/types/users';
-import {getTeam} from 'mattermost-redux/selectors/entities/teams';
 import {getUser} from 'mattermost-redux/selectors/entities/users';
+import {Team} from 'mattermost-redux/types/teams';
 
 // @ts-ignore
-const PostUtils = window.PostUtils;
+const {formatText, messageHtmlToComponent} = window.PostUtils;
 // @ts-ignore
 const WebappUtils = window.WebappUtils;
 
 type Props = {
     post: Post,
-    teamId: string,
+    team: Team,
 }
 
 const PostView = styled.div`
@@ -29,7 +28,7 @@ const PostView = styled.div`
 
 const PostIconView = styled.div`
     flex-basis: 37px;
-    paddingRight: 2px;
+    padding-right: 2px;
 `
 const PostIcon = styled.img`
     height: 32px;
@@ -55,20 +54,23 @@ const handleJumpClick = (teamName: string, postId: string) => {
     }
 }
 
-const UnreadPost: FC<Props> = ({post, teamId}) => {
-    const dispatch = useDispatch();
-
+const UnreadPost: FC<Props> = ({post, team}) => {
     const user = useSelector<GlobalState, UserProfile>(state => getUser(state, post.user_id));
-    const team = useSelector<GlobalState, Team>(state => getTeam(state, teamId));
     const profileUri = Client4.getProfilePictureUrl(user.id, user.last_picture_update);
-    const postLink = `${Client4.getUrl()}/${team.name}/pl/${post.id}`
     // TODO: show created_at apllying user's time zone settings
     // TODO: fix user name format as user's setting
-    // TODO: change jumping link to switching channel
 
-    const formattedText = PostUtils.messageHtmlToComponent(
-        PostUtils.formatText(post.message),
-        false, // isRHS
+    const formattedText = messageHtmlToComponent(
+        formatText(
+            post.message,
+            {
+                singlelie: false,
+                mentionsHighlight: true,
+                atMentions: true,
+                team,
+            }
+        ),
+        true, // isRHS
         {}
     );
     return (
@@ -78,12 +80,14 @@ const UnreadPost: FC<Props> = ({post, teamId}) => {
                     <PostIcon src={profileUri}/>
                 </PostIconView>
                 <PostContentsView>
-                    <p>
+                    <div>
                         <PostHeaderUser>{user.username}</PostHeaderUser>
                         <PostHeaderTime>{post.create_at}</PostHeaderTime>
                         <a href='#' onClick={handleJumpClick(team.name, post.id)}>Jump</a>
-                    </p>
-                    <p>{formattedText}</p>
+                    </div>
+                    <div>
+                        {formattedText}
+                    </div>
                 </PostContentsView>
             </PostView>
         </>

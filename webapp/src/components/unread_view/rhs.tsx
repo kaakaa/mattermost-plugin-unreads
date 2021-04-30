@@ -11,7 +11,6 @@ const UnreadView: FC<null> = () => {
     const channels = unreadChannels
         .map(id => <UnreadChannel key={id} channelId={id}/>);
 
-    console.log('unread_view');
     return (
         <div>
             {channels}
