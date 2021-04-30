@@ -1,15 +1,20 @@
 import React, {FC} from 'react';
 import {useSelector} from 'react-redux';
 import styled from 'styled-components';
+import {utcToZonedTime, format} from 'date-fns-tz';
+import intervalToDuration from 'date-fns/intervalToDuration';
 
 import {Client4} from 'mattermost-redux/client';
 import {Post} from 'mattermost-redux/types/posts';
 import {GlobalState} from 'mattermost-redux/types/store';
 import {UserProfile} from 'mattermost-redux/types/users';
-import {getUser} from 'mattermost-redux/selectors/entities/users';
+import {getCurrentUserId, getUser} from 'mattermost-redux/selectors/entities/users';
 import {Team} from 'mattermost-redux/types/teams';
-import {getTeammateNameDisplaySetting} from 'mattermost-redux/selectors/entities/preferences';
+import {getBool, getTeammateNameDisplaySetting} from 'mattermost-redux/selectors/entities/preferences';
 import {displayUsername} from 'mattermost-redux/utils/user_utils';
+import {getUserCurrentTimezone} from 'mattermost-redux/utils/timezone_utils';
+import {Preferences} from 'mattermost-redux/constants';
+import {getCurrentUserLocale} from 'mattermost-redux/selectors/entities/i18n';
 
 // @ts-ignore
 const {formatText, messageHtmlToComponent} = window.PostUtils;
@@ -63,15 +68,34 @@ const handleJumpClick = (teamName: string, postId: string) => {
 }
 
 const UnreadPost: FC<Props> = ({post, team}) => {
-    const user = useSelector<GlobalState, UserProfile>(state => getUser(state, post.user_id));
-
+    const currentUserId = useSelector<GlobalState, string>(getCurrentUserId);
+    const currentUser = useSelector<GlobalState, UserProfile>(state => getUser(state, currentUserId));
     let teammateNameSetting = useSelector<GlobalState, string|undefined>(getTeammateNameDisplaySetting);
     if (!teammateNameSetting) {
         teammateNameSetting = '';
     }
-    const username = displayUsername(user, teammateNameSetting!);
+    let tz = getUserCurrentTimezone(currentUser.timezone);
+    if (!tz) {
+        tz = '';
+    }
 
+
+    const isMilitary = useSelector<GlobalState, boolean>(state => getBool(state,Preferences.CATEGORY_DISPLAY_SETTINGS, Preferences.USE_MILITARY_TIME));
+    let timeFormat = isMilitary ? 'HH:mm' : 'p';
+
+    // TODO: this will cause always re-render. it should be to introduce date separator.
+    const interval: Duration = intervalToDuration({
+        start: utcToZonedTime(post.create_at, tz),
+        end: utcToZonedTime(Date.now(), tz),
+    });
+    if (interval.days && interval.days > 0) {
+        timeFormat = `PP ${timeFormat}`
+    }
+    const createdAt = format(utcToZonedTime(post.create_at, tz), timeFormat, {timeZone: tz});
+
+    const user = useSelector<GlobalState, UserProfile>(state => getUser(state, post.user_id));
     const profileUri = Client4.getProfilePictureUrl(user.id, user.last_picture_update);
+    const username = displayUsername(user, teammateNameSetting!);
 
     const formattedText = messageHtmlToComponent(
         formatText(
@@ -87,8 +111,8 @@ const UnreadPost: FC<Props> = ({post, team}) => {
         {}
     );
 
-    // TODO: show created_at apllying user's time zone settings (use date-fns?)
-    // TODO: fix user name format as user's setting
+    // TODO: show custom status
+    // TODO: show user's status
     // TODO: snip longer post
     return (
         <>
@@ -99,7 +123,7 @@ const UnreadPost: FC<Props> = ({post, team}) => {
                 <PostContentsView>
                     <div>
                         <PostHeaderUser>{username}</PostHeaderUser>
-                        <PostHeaderTime>{post.create_at}</PostHeaderTime>
+                        <PostHeaderTime>{createdAt}</PostHeaderTime>
                         <a href='#' onClick={handleJumpClick(team.name, post.id)}>Jump</a>
                     </div>
                     <PostContentsBody>

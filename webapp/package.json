@@ -64,6 +64,8 @@
   },
   "dependencies": {
     "core-js": "3.6.5",
+    "date-fns": "2.21.1",
+    "date-fns-tz": "1.1.4",
     "mattermost-redux": "5.33.1",
     "react": "16.13.1",
     "react-redux": "7.2.0",
