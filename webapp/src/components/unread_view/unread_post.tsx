@@ -63,8 +63,6 @@ const handleJumpClick = (teamName: string, postId: string) => {
 const UnreadPost: FC<Props> = ({post, team}) => {
     const user = useSelector<GlobalState, UserProfile>(state => getUser(state, post.user_id));
     const profileUri = Client4.getProfilePictureUrl(user.id, user.last_picture_update);
-    // TODO: show created_at apllying user's time zone settings
-    // TODO: fix user name format as user's setting
 
     const formattedText = messageHtmlToComponent(
         formatText(
@@ -79,6 +77,10 @@ const UnreadPost: FC<Props> = ({post, team}) => {
         true, // isRHS
         {}
     );
+
+    // TODO: show created_at apllying user's time zone settings (use date-fns?)
+    // TODO: fix user name format as user's setting
+    // TODO: snip longer post
     return (
         <>
             <PostView>

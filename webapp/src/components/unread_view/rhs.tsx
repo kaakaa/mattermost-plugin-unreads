@@ -1,10 +1,15 @@
 import React, {FC} from 'react';
 import {useSelector} from 'react-redux';
+import styled from 'styled-components';
 
 import {GlobalState} from 'mattermost-redux/types/store';
 import {getSortedUnreadChannelIds} from 'mattermost-redux/selectors/entities/channels';
 
 import UnreadChannel from './unread_channel';
+
+const View = styled.div`
+    overflow-y: scroll;
+`
 
 const UnreadView: FC<null> = () => {
     const unreadChannels = useSelector<GlobalState, string[]>(state => getSortedUnreadChannelIds(state, null, false, false, 'recent'));
@@ -12,9 +17,9 @@ const UnreadView: FC<null> = () => {
         .map(id => <UnreadChannel key={id} channelId={id}/>);
 
     return (
-        <div>
+        <View>
             {channels}
-        </div>
+        </View>
     );
 }
 export default UnreadView;
