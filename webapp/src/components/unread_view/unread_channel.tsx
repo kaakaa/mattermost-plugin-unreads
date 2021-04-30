@@ -83,6 +83,7 @@ const UnreadChannel: FC<Props> = ({channelId}) => {
         );
     }
 
+    // TODO: add accordion to unread channe lcontent
     return (
         <>
             <UnreadChannelContent>

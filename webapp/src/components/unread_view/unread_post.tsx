@@ -14,7 +14,6 @@ import {getBool, getTeammateNameDisplaySetting} from 'mattermost-redux/selectors
 import {displayUsername} from 'mattermost-redux/utils/user_utils';
 import {getUserCurrentTimezone} from 'mattermost-redux/utils/timezone_utils';
 import {Preferences} from 'mattermost-redux/constants';
-import {getCurrentUserLocale} from 'mattermost-redux/selectors/entities/i18n';
 
 // @ts-ignore
 const {formatText, messageHtmlToComponent} = window.PostUtils;
@@ -46,6 +45,7 @@ const PostIcon = styled.img`
 
 const PostContentsView = styled.div`
     flex-basis: auto;
+    max-height: 300px;
 `
 
 const PostHeaderUser = styled.span`
@@ -54,10 +54,15 @@ const PostHeaderUser = styled.span`
 `
 const PostHeaderTime = styled.span`
     opacity: 0.5;
-    margin: 0px 2px;
+    margin-left: 5px;
+    margin-right: 15px;
 `
 const PostContentsBody = styled.div`
     padding-top: 4px;
+    max-height: 265px;
+    overflow: hidden;
+    while-space: nowrap;
+    text-overflow: ellipsis;
 `
 
 const handleJumpClick = (teamName: string, postId: string) => {
@@ -113,7 +118,6 @@ const UnreadPost: FC<Props> = ({post, team}) => {
 
     // TODO: show custom status
     // TODO: show user's status
-    // TODO: snip longer post
     return (
         <>
             <PostView>
