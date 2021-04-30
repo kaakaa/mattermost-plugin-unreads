@@ -1,7 +1,7 @@
 {
     "id": "com.github.kaakaa.mattermost-plugin-unreads",
     "name": "Unreads Sidebar Plugin",
-    "description": "This plugin display unread messages in RHS.",
+    "description": "This plugin subscribe and display unread messages in RHS.",
     "homepage_url": "https://github.com/kaakaa/mattermost-plugin-unreads",
     "support_url": "https://github.com/kaakaa/mattermost-plugin-unreads/issues",
     "release_notes_url": "https://github.com/kaakaa/mattermost-plugin-unreads/releases/tag/v0.1.0",
