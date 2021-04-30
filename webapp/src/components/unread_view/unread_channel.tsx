@@ -1,7 +1,9 @@
 import React, {FC} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
 
+import {ActionFunc} from 'mattermost-redux/types/actions';
+import {markChannelAsRead} from 'mattermost-redux/actions/channels';
 import {Post, PostWithFormatData} from 'mattermost-redux/types/posts';
 import {GlobalState} from 'mattermost-redux/types/store';
 import {makeGetPostsInChannel} from 'mattermost-redux/selectors/entities/posts';
@@ -34,6 +36,8 @@ const ChannelHeaderDescription = styled.span`
 
 const UnreadChannel: FC<Props> = ({channelId}) => {
     // TDOO: memorize?
+    const dispatch = useDispatch();
+
     const channel = useSelector<GlobalState, Channel>(state => getChannel(state, channelId));
     const membership = useSelector<GlobalState, any>(state => getMyChannelMember(state, channelId));
     const unreadCount = channel.total_msg_count - membership.msg_count;
@@ -49,15 +53,21 @@ const UnreadChannel: FC<Props> = ({channelId}) => {
     if (unreadCount > 3) {
         footerText = `(${unreadCount - 3} messages)`
     }
+
+    const markAsRead = (e:any) => {
+        e.preventDefault();
+        dispatch(markChannelAsRead(channel.id));
+    }
     // TODO: sum up with same user's consective posts
-    // TODO: header menu action
     return (
         <>
             <UnreadChannelContent>
                 <ChannelHeader>
                     <ChannelHeaderTitle>{channel.display_name}</ChannelHeaderTitle>
                     <ChannelHeaderDescription>{footerText}</ChannelHeaderDescription>
-                    <ChannelHeaderIconMenu className='icon fa fa-check-square'></ChannelHeaderIconMenu>
+                    <a href='#' onClick={(markAsRead)}>
+                        <ChannelHeaderIconMenu className='icon fa fa-check-square'></ChannelHeaderIconMenu>
+                    </a>
                 </ChannelHeader>
                 {posts.map((p) => {
                     var post = p as Post;
