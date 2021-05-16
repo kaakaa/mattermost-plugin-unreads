@@ -48,7 +48,7 @@ const UnreadChannel: FC<Props> = (props: Props) => {
 
     // TDOO: memorize?
     const dispatch = useDispatch();
-    const markAsRead = (e:any) => {
+    const markAsRead = (e: any) => {
         e.preventDefault();
         dispatch(markChannelAsRead(channel.id));
     };
@@ -75,7 +75,7 @@ const UnreadChannel: FC<Props> = (props: Props) => {
     let footer = <></>;
     if (unreadCount > 3) {
         footer = (
-            <ChannelFooter>
+            <ChannelFooter id='plugin-unreads-channel__footer'>
                 <a
                     href='#'
                     onClick={handleJumpToChannel(team.name, channel.id)}
@@ -90,9 +90,9 @@ const UnreadChannel: FC<Props> = (props: Props) => {
     return (
         <>
             <UnreadChannelContent>
-                <ChannelHeader>
-                    <ChannelHeaderTitle>{channel.display_name}</ChannelHeaderTitle>
-                    <ChannelHeaderDescription>{`(${unreadCount} messages)`}</ChannelHeaderDescription>
+                <ChannelHeader className={`plugin-unreads-channel plugin-unreads-channel__${channel.id}`}>
+                    <ChannelHeaderTitle className='plugin-unreads-channel__header-title'>{channel.display_name}</ChannelHeaderTitle>
+                    <ChannelHeaderDescription className='plugin-unreads-channel__header-description'>{`(${unreadCount} messages)`}</ChannelHeaderDescription>
                     <OverlayTrigger
                         key={channel.id}
                         placement={'bottom'}
@@ -106,7 +106,7 @@ const UnreadChannel: FC<Props> = (props: Props) => {
                             href='#'
                             onClick={(markAsRead)}
                         >
-                            <ChannelHeaderIconMenu className='icon fa fa-check-square'/>
+                            <ChannelHeaderIconMenu className='icon fa fa-check-square plugin-unreads-channel__header-icon' />
                         </a>
                     </OverlayTrigger>
                 </ChannelHeader>
@@ -121,7 +121,7 @@ const UnreadChannel: FC<Props> = (props: Props) => {
                     );
                 })}
                 {footer}
-                <hr/>
+                <hr />
             </UnreadChannelContent>
         </>
     );
