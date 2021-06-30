@@ -12,4 +12,8 @@
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
 
-module.exports = require('mattermost-webapp/e2e/cypress/plugins');
+module.exports = (on: Cypress.PluginEvents, config: Cypress.PluginConfigOptions) => {
+    require('mattermost-webapp/e2e/cypress/plugins')(on, config);
+
+    return config;
+};

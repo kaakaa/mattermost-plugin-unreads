@@ -3,10 +3,21 @@
     "strict": true,
     "baseUrl": "../node_modules",
     "target": "es5",
-    "lib": ["es5", "dom"],
-    "types": ["node", "cypress", "cypress-wait-until", "@types/testing-library__cypress"]
+    "lib": [
+      "es5",
+      "dom"
+    ],
+    "types": [
+      "node",
+      "cypress",
+      "cypress-wait-until",
+      "@types/testing-library__cypress"
+    ]
   },
   "include": [
-    "**/*.ts", "support/index.ts"
+    "**/*.ts",
+    "support/index.ts",
+    "support/index.d.ts_",
+    "integration/unread_spec.js"
   ]
 }
