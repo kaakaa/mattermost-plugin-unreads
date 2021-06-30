@@ -6,10 +6,12 @@ import {markChannelAsRead} from 'mattermost-redux/actions/channels';
 import {Post, PostWithFormatData} from 'mattermost-redux/types/posts';
 import {GlobalState} from 'mattermost-redux/types/store';
 import {makeGetPostsInChannel} from 'mattermost-redux/selectors/entities/posts';
+import {getUserIdFromChannelName, isDirectChannel, isGroupChannel} from 'mattermost-redux/utils/channel_utils';
 import {isSystemMessage} from 'mattermost-redux/utils/post_utils';
 import {getChannel, getMyChannelMember} from 'mattermost-redux/selectors/entities/channels';
 import {Channel} from 'mattermost-redux/types/channels';
-import {getTeam} from 'mattermost-redux/selectors/entities/teams';
+import {getCurrentTeam, getTeam} from 'mattermost-redux/selectors/entities/teams';
+import {getCurrentUserId, getUser} from 'mattermost-redux/selectors/entities/users';
 import {Team} from 'mattermost-redux/types/teams';
 
 import UnreadPost from 'components/unread_view/unread_post';
@@ -29,7 +31,7 @@ const ChannelHeader = styled.div`
     align-items: baseline;
     margin-bottom: 5px;
 `;
-const ChannelHeaderTitle = styled.h2`font-size: 1.5em; font-weight: bold;`;
+const ChannelHeaderTitle = styled.h2`font-size: 1.2em; font-weight: bold;`;
 const ChannelHeaderIconMenu = styled.i`padding-left: 5px;`;
 const ChannelHeaderDescription = styled.span`
     opacity: 0.7;
@@ -43,6 +45,34 @@ interface Props {
     channelId: string;
 }
 
+const getTeamFromChannel = (state: GlobalState, channel: Channel): Team => {
+    if (isDirectChannel(channel) || isGroupChannel(channel)) {
+        // If DM or GM, Channel object doesn't have team_id. Instead, use current team.
+        return getCurrentTeam(state);
+    }
+    return getTeam(state, channel.team_id);
+};
+
+const getChannelName = (state: GlobalState, channel: Channel, currentUserId: string): string => {
+    if (isDirectChannel(channel)) {
+        const userId = getUserIdFromChannelName(currentUserId, channel.name);
+        const user = getUser(state, userId);
+        return `@${user.username}`;
+    }
+    return channel.display_name;
+};
+
+const getChannelLink = (state: GlobalState, team: Team, channel: Channel, currentUserId: string): string => {
+    if (isDirectChannel(channel)) {
+        const userId = getUserIdFromChannelName(currentUserId, channel.name);
+        const user = getUser(state, userId);
+        return `/${team.name}/messages/@${user.username}`;
+    } else if (isGroupChannel(channel)) {
+        return `/${team.name}/messages/${channel.name}`;
+    }
+    return `/${team.name}/channels/${channel.id}`;
+};
+
 const UnreadChannel: FC<Props> = (props: Props) => {
     const {channelId} = props;
 
@@ -53,15 +83,20 @@ const UnreadChannel: FC<Props> = (props: Props) => {
         dispatch(markChannelAsRead(channel.id));
     };
 
-    const handleJumpToChannel = (tid: string, cid: string) => {
+    const handleJumpToChannel = (channelLink: string) => {
         return (e: any) => {
             e.preventDefault();
-            WebappUtils.browserHistory.push(`/${tid}/channels/${cid}`);
+            WebappUtils.browserHistory.push(channelLink);
         };
     };
 
+    const currentUserId = useSelector<GlobalState, string>(getCurrentUserId);
     const channel = useSelector<GlobalState, Channel>((state) => getChannel(state, channelId));
-    const team = useSelector<GlobalState, Team>((state) => getTeam(state, channel.team_id));
+    const team = useSelector<GlobalState, Team>((state) => getTeamFromChannel(state, channel));
+
+    const channelName = useSelector<GlobalState, string>((state) => getChannelName(state, channel, currentUserId));
+    const channelLink = useSelector<GlobalState, string>((state) => getChannelLink(state, team, channel, currentUserId));
+
     const membership = useSelector<GlobalState, any>((state) => getMyChannelMember(state, channelId));
     const unreadCount = channel.total_msg_count - membership.msg_count;
     const allPosts = useSelector<GlobalState, PostWithFormatData[]>((state) => makeGetPostsInChannel()(state, channel.id, -1)!);
@@ -73,12 +108,12 @@ const UnreadChannel: FC<Props> = (props: Props) => {
     const posts = allPosts.filter((p) => !isSystemMessage(p)).slice(0, Math.min(unreadCount, 3));
 
     let footer = <></>;
-    if (unreadCount > 3) {
+    if (unreadCount > 3 && channelLink) {
         footer = (
             <ChannelFooter id='plugin-unreads-channel__footer'>
                 <a
                     href='#'
-                    onClick={handleJumpToChannel(team.name, channel.id)}
+                    onClick={handleJumpToChannel(channelLink)}
                 >
                     {'See more unreads'}
                 </a>
