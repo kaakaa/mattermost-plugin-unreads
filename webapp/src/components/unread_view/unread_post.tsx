@@ -74,7 +74,7 @@ const UnreadPost: FC<Props> = (props: Props) => {
     const {post, team} = props;
     const currentUserId = useSelector<GlobalState, string>(getCurrentUserId);
     const currentUser = useSelector<GlobalState, UserProfile>((state) => getUser(state, currentUserId));
-    let teammateNameSetting = useSelector<GlobalState, string|undefined>(getTeammateNameDisplaySetting);
+    let teammateNameSetting = useSelector<GlobalState, string | undefined>(getTeammateNameDisplaySetting);
     if (!teammateNameSetting) {
         teammateNameSetting = '';
     }
@@ -120,7 +120,7 @@ const UnreadPost: FC<Props> = (props: Props) => {
         <>
             <PostView>
                 <PostIconView>
-                    <PostIcon src={profileUri}/>
+                    <PostIcon src={profileUri} />
                 </PostIconView>
                 <PostContentsView>
                     <div>

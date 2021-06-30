@@ -1,7 +1,7 @@
 {
   "extends": [
-      "eslint:recommended",
-      "plugin:react-hooks/recommended"
+    "eslint:recommended",
+    "plugin:react-hooks/recommended"
   ],
   "parserOptions": {
     "ecmaVersion": 8,
@@ -510,7 +510,7 @@
       2,
       {
         "closingSlash": "never",
-        "beforeSelfClosing": "never",
+        "beforeSelfClosing": "always",
         "afterOpening": "never"
       }
     ],
@@ -632,7 +632,10 @@
   },
   "overrides": [
     {
-      "files": ["**/*.tsx", "**/*.ts"],
+      "files": [
+        "**/*.tsx",
+        "**/*.ts"
+      ],
       "extends": "plugin:@typescript-eslint/recommended",
       "rules": {
         "@typescript-eslint/ban-ts-ignore": 0,
@@ -660,7 +663,10 @@
         "react/jsx-filename-extension": [
           1,
           {
-            "extensions": [".jsx", ".tsx"]
+            "extensions": [
+              ".jsx",
+              ".tsx"
+            ]
           }
         ]
       }

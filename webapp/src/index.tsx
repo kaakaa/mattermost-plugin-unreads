@@ -16,7 +16,7 @@ export default class Plugin {
         // @see https://developers.mattermost.com/extend/plugins/webapp/reference/
         const {toggleRHSPlugin} = registry.registerRightHandSidebarComponent(UnreadView, 'Unreads');
         registry.registerChannelHeaderButtonAction(
-            () => (<i className='icon fa fa-align-left'/>),
+            () => (<i className='icon fa fa-align-left' />),
             () => store.dispatch(toggleRHSPlugin),
             'Open Unread Sidebar',
             'Open Unread Sidebar',

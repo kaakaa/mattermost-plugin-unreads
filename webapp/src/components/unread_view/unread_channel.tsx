@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 import {markChannelAsRead} from 'mattermost-redux/actions/channels';
 import {Post, PostWithFormatData} from 'mattermost-redux/types/posts';
-import {UserProfile} from 'mattermost-redux/types/users';
 import {GlobalState} from 'mattermost-redux/types/store';
 import {makeGetPostsInChannel} from 'mattermost-redux/selectors/entities/posts';
 import {getUserIdFromChannelName, isDirectChannel, isGroupChannel} from 'mattermost-redux/utils/channel_utils';
@@ -143,7 +142,7 @@ const UnreadChannel: FC<Props> = (props: Props) => {
                             href='#'
                             onClick={(markAsRead)}
                         >
-                            <ChannelHeaderIconMenu className='icon fa fa-check-square'/>
+                            <ChannelHeaderIconMenu className='icon fa fa-check-square' />
                         </a>
                     </OverlayTrigger>
                 </ChannelHeader>
@@ -158,7 +157,7 @@ const UnreadChannel: FC<Props> = (props: Props) => {
                     );
                 })}
                 {footer}
-                <hr/>
+                <hr />
             </UnreadChannelContent>
         </>
     );
