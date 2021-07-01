@@ -21,6 +21,13 @@ export MM_ADMIN_TOKEN=j44acwd8obn78cdcx7koid4jkr
 make deploy
 ```
 
+### Test
+
+```bash
+make test
+make e2e
+```
+
 ## LICENSE
 
 [LICENSE](./LICENSE)
