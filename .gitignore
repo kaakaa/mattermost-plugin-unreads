@@ -8,3 +8,5 @@ dist/
 
 # Jetbrains
 .idea/
+
+com.github.kaakaa.mattermost-plugin-unreads-*.tar.gz
