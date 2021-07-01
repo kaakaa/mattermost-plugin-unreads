@@ -120,7 +120,10 @@ const UnreadPost: FC<Props> = (props: Props) => {
         <>
             <PostView className={`plugin-unreads-post plugin-unreads-post__${post.id}`}>
                 <PostIconView>
-                    <PostIcon className='plugin-unreads-post__icon' src={profileUri} />
+                    <PostIcon
+                        className='plugin-unreads-post__icon'
+                        src={profileUri}
+                    />
                 </PostIconView>
                 <PostContentsView>
                     <div>
