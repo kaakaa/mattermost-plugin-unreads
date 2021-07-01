@@ -3,6 +3,19 @@ import {plugin} from '../utils/plugins';
 describe('subscribe unreads post', () => {
     let testTeam, testChannel, testUser;
     before(() => {
+        const newSettings = {
+            PluginSettings: {
+                Enable: true,
+            },
+            ServiceSettings: {
+                EnableTesting: true,
+                EnableDeveloper: true,
+            },
+        };
+
+        cy.apiUpdateConfig(newSettings);
+        cy.apiUploadAndEnablePlugin(plugin);
+
         cy.apiInitSetup().then(({team, channel, user}) => {
             testTeam = team;
             testChannel = channel;
