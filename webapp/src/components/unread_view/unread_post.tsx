@@ -104,7 +104,7 @@ const UnreadPost: FC<Props> = (props: Props) => {
         formatText(
             post.message,
             {
-                singlelie: false,
+                singleline: false,
                 mentionsHighlight: true,
                 atMentions: true,
                 team,
@@ -118,7 +118,7 @@ const UnreadPost: FC<Props> = (props: Props) => {
     // TODO: show user's status
     return (
         <>
-            <PostView className={`plugin-unreads-post plugin-unreads-post__${post.id}`}>
+            <PostView className={`post plugin-unreads-post plugin-unreads-post__${post.id}`}>
                 <PostIconView>
                     <PostIcon
                         className='plugin-unreads-post__icon'
