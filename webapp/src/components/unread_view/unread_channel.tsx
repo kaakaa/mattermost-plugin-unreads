@@ -94,7 +94,6 @@ const UnreadChannel: FC<Props> = (props: Props) => {
     const channel = useSelector<GlobalState, Channel>((state) => getChannel(state, channelId));
     const team = useSelector<GlobalState, Team>((state) => getTeamFromChannel(state, channel));
 
-    const channelName = useSelector<GlobalState, string>((state) => getChannelName(state, channel, currentUserId));
     const channelLink = useSelector<GlobalState, string>((state) => getChannelLink(state, team, channel, currentUserId));
 
     const membership = useSelector<GlobalState, any>((state) => getMyChannelMember(state, channelId));
