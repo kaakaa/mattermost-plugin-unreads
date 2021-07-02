@@ -94,16 +94,16 @@ const UnreadChannel: FC<Props> = (props: Props) => {
     const channel = useSelector<GlobalState, Channel>((state) => getChannel(state, channelId));
     const team = useSelector<GlobalState, Team>((state) => getTeamFromChannel(state, channel));
 
-    const channelName = useSelector<GlobalState, string>((state) => getChannelName(state, channel, currentUserId));
     const channelLink = useSelector<GlobalState, string>((state) => getChannelLink(state, team, channel, currentUserId));
-
     const membership = useSelector<GlobalState, any>((state) => getMyChannelMember(state, channelId));
-    const unreadCount = channel.total_msg_count - membership.msg_count;
     const allPosts = useSelector<GlobalState, PostWithFormatData[]>((state) => makeGetPostsInChannel()(state, channel.id, -1)!);
-    if (!allPosts) {
-        return (
-            <></>
-        );
+
+    // There is a case where membership.mention_count is more than one even though unreadCount == 0.
+    // e.g.: When someone invite you in new channel, system post message with mention.
+    // But ignoring that case is not big deal.
+    const unreadCount = channel.total_msg_count - membership.msg_count;
+    if (!allPosts || unreadCount === 0) {
+        return <></>;
     }
     const posts = allPosts.filter((p) => !isSystemMessage(p)).slice(0, Math.min(unreadCount, 3));
 
