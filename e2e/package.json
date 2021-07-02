@@ -1,0 +1,27 @@
+{
+  "name": "e2e",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "cypress run"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@testing-library/cypress": "^7.0.6",
+    "@types/node": "^15.0.2",
+    "@types/testing-library__cypress": "^5.0.8",
+    "axios": "0.20.0",
+    "cypress": "^7.2.0",
+    "cypress-file-upload": "4.1.1",
+    "cypress-plugin-tab": "1.0.5",
+    "cypress-wait-until": "1.7.1",
+    "deepmerge": "4.2.2",
+    "lodash.mapkeys": "4.6.0",
+    "lodash.xor": "4.5.0",
+    "mattermost-redux": "5.33.1",
+    "mattermost-webapp": "github:mattermost/mattermost-webapp#76c6005c24f1cfa5a761912ebf60e41ae058b8c3",
+    "mochawesome": "6.1.1"
+  }
+}

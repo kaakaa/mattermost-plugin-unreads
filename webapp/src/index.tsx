@@ -16,7 +16,9 @@ export default class Plugin {
         // @see https://developers.mattermost.com/extend/plugins/webapp/reference/
         const {toggleRHSPlugin} = registry.registerRightHandSidebarComponent(UnreadView, 'Unreads');
         registry.registerChannelHeaderButtonAction(
-            () => (<i className='icon fa fa-align-left' />),
+
+            // TODO: add 'chennel-header_icon--active' when enabled. ref: incident-colleboration plugin.
+            () => (<i className='icon fa fa-align-left icon__plugin-unreads' />),
             () => store.dispatch(toggleRHSPlugin),
             'Open Unread Sidebar',
             'Open Unread Sidebar',

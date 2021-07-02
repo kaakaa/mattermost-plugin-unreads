@@ -118,22 +118,26 @@ const UnreadPost: FC<Props> = (props: Props) => {
     // TODO: show user's status
     return (
         <>
-            <PostView>
+            <PostView className={`plugin-unreads-post plugin-unreads-post__${post.id}`}>
                 <PostIconView>
-                    <PostIcon src={profileUri} />
+                    <PostIcon
+                        className='plugin-unreads-post__icon'
+                        src={profileUri}
+                    />
                 </PostIconView>
                 <PostContentsView>
                     <div>
-                        <PostHeaderUser>{username}</PostHeaderUser>
-                        <PostHeaderTime>{createdAt}</PostHeaderTime>
+                        <PostHeaderUser className='plugin-unreads-post__header-username'>{username}</PostHeaderUser>
+                        <PostHeaderTime className='plugin-unreads-post__header-time'>{createdAt}</PostHeaderTime>
                         <a
+                            className='plugin-unreads-post__jump'
                             href='#'
                             onClick={handleJumpClick(team.name, post.id)}
                         >
                             {'Jump'}
                         </a>
                     </div>
-                    <PostContentsBody>
+                    <PostContentsBody className='plugin-unreads-post__content'>
                         {formattedText}
                     </PostContentsBody>
                 </PostContentsView>

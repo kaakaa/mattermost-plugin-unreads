@@ -1,0 +1,32 @@
+{
+    "baseUrl": "http://192.168.11.3:8065",
+    "viewportWidth": 1300,
+    "defaultCommandTimeout": 20000,
+    "taskTimeout": 20000,
+    "pluginID": "com.github.kaakaa.mattermost-plugin-unreads",
+    "pluginFile": "com.github.kaakaa.mattermost-plugin-unreads-0.1.0.tar.gz",
+    "video": false,
+    "ignoreTestFiles": "**/node_modules/**/*",
+    "integrationFolder": "..",
+    "testFiles": "**/*_spec.{js,ts}",
+    "env": {
+        "adminUsername": "sysadmin",
+        "adminPassword": "Sys@dmin-sample1",
+        "ciBaseUrl": "",
+        "dbClient": "mysql",
+        "dbConnection": "mmuser:mostest@tcp(localhost:3306)/mattermost_test?charset=utf8mb4,utf8\u0026readTimeout=30s\u0026writeTimeout=30s",
+        "enableApplitools": false,
+        "enableVisualTest": false,
+        "ldapServer": "localhost",
+        "ldapPort": 389,
+        "numberOfTrialUsers": 100,
+        "runLDAPSync": true,
+        "resetBeforeTest": false,
+        "smtpUrl": "http://localhost:10080",
+        "storybookUrl": "http://localhost:6006/",
+        "webhookBaseUrl": "http://localhost:3000",
+        "AWS_S3_BUCKET": "",
+        "AWS_ACCESS_KEY_ID": "",
+        "AWS_SECRET_ACCESS_KEY": ""
+    }
+}
