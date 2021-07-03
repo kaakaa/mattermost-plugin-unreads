@@ -57,6 +57,13 @@ const PostContentsBody = styled.div`
     while-space: nowrap;
     text-overflow: ellipsis;
 `;
+const HasAttachments = styled.div`
+    opacity: 0.6;
+    padding: 4px 12px;
+    border-left-width: 4px;
+    border-left-style: solid;
+    border-left-color: var(--sidebar-header-bg);
+`;
 
 const handleJumpClick = (teamName: string, postId: string) => {
     return (e: any) => {
@@ -114,6 +121,13 @@ const UnreadPost: FC<Props> = (props: Props) => {
         {},
     );
 
+    let hasAttachments;
+    if (post.props['attachments'] && Array.isArray(post.props['attachments']) && post.props['attachments'].length > 0) {
+        hasAttachments = (
+            <HasAttachments>(This post has additional contents.)</HasAttachments>
+        );
+    }
+
     // TODO: show custom status
     // TODO: show user's status
     return (
@@ -140,6 +154,7 @@ const UnreadPost: FC<Props> = (props: Props) => {
                     <PostContentsBody className='plugin-unreads-post__content'>
                         {formattedText}
                     </PostContentsBody>
+                    {hasAttachments}
                 </PostContentsView>
             </PostView>
         </>
