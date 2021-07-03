@@ -122,9 +122,10 @@ const UnreadPost: FC<Props> = (props: Props) => {
     );
 
     let hasAttachments;
+    // eslint-disable-next-line dot-notation
     if (post.props['attachments'] && Array.isArray(post.props['attachments']) && post.props['attachments'].length > 0) {
         hasAttachments = (
-            <HasAttachments>(This post has additional contents.)</HasAttachments>
+            <HasAttachments>{'(This post has additional contents.)'}</HasAttachments>
         );
     }
 
