@@ -26,14 +26,20 @@ const UnreadChannelContent = styled.div`
     margin-left: 5px;
 `;
 const ChannelHeader = styled.div`
-    display: flex;
-    justify-content: flex-start;
-    align-items: baseline;
     margin-bottom: 5px;
 `;
-const ChannelHeaderTitle = styled.h2`font-size: 1.2em; font-weight: bold;`;
-const ChannelHeaderIconMenu = styled.i`padding-left: 5px;`;
-const ChannelHeaderDescription = styled.span`
+const ChannelHeaderTitle = styled.h2`
+    font-size: 1.2em;
+    font-weight: bold;
+`;
+const ChannelHeaderIconMenu = styled.i`
+    padding-left: 5px;
+    color: grey;
+    &:hover {
+        color: blue;
+    }
+`;
+const ChannelHeaderDescription = styled.div`
     opacity: 0.7;
     padding-left: 5px;
 `;
@@ -115,7 +121,7 @@ const UnreadChannel: FC<Props> = (props: Props) => {
                     href='#'
                     onClick={handleJumpToChannel(channelLink)}
                 >
-                    {'See more unreads'}
+                    {`See more ${unreadCount - 3} unreads`}
                 </a>
             </ChannelFooter>
         );
@@ -126,24 +132,27 @@ const UnreadChannel: FC<Props> = (props: Props) => {
         <>
             <UnreadChannelContent>
                 <ChannelHeader className={`plugin-unreads-channel plugin-unreads-channel__${channel.id}`}>
-                    <ChannelHeaderTitle className='plugin-unreads-channel__header-title'>{channel.display_name}</ChannelHeaderTitle>
-                    <ChannelHeaderDescription className='plugin-unreads-channel__header-description'>{`(${unreadCount} messages)`}</ChannelHeaderDescription>
-                    <OverlayTrigger
-                        key={channel.id}
-                        placement={'bottom'}
-                        overlay={
-                            <Tooltip id={'tooltip-bottom'}>
-                                {'Mark as read'}
-                            </Tooltip>
-                        }
+                    <ChannelHeaderTitle
+                        className='plugin-unreads-channel__header-title'
                     >
-                        <a
-                            href='#'
-                            onClick={(markAsRead)}
+                        {channel.display_name}
+                        <OverlayTrigger
+                            key={channel.id}
+                            placement={'bottom'}
+                            overlay={
+                                <Tooltip id={'tooltip-bottom'}>
+                                    {'Mark as read'}
+                                </Tooltip>
+                            }
                         >
-                            <ChannelHeaderIconMenu className='icon fa fa-check-square plugin-unreads-channel__header-icon' />
-                        </a>
-                    </OverlayTrigger>
+                            <a
+                                href='#'
+                                onClick={(markAsRead)}
+                            >
+                                <ChannelHeaderIconMenu className='icon fa fa-check-square-o plugin-unreads-channel__header-icon' />
+                            </a>
+                        </OverlayTrigger>
+                    </ChannelHeaderTitle>
                 </ChannelHeader>
                 {posts.map((p) => {
                     const post = p as Post;
