@@ -1,5 +1,5 @@
-import {getUnreadChannels, mapAndSortChannelIds} from "mattermost-redux/selectors/entities/channels";
-import {getMyChannelMemberships, getCurrentUser} from "mattermost-redux/selectors/entities/common";
+import {getUnreadChannels, mapAndSortChannelIds} from 'mattermost-redux/selectors/entities/channels';
+import {getMyChannelMemberships, getCurrentUser} from 'mattermost-redux/selectors/entities/common';
 import {getLastPostPerChannel} from 'mattermost-redux/selectors/entities/posts';
 
 import {Channel} from 'mattermost-redux/types/channels';

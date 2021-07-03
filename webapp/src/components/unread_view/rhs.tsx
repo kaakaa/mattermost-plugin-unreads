@@ -4,8 +4,9 @@ import styled from 'styled-components';
 
 import {GlobalState} from 'mattermost-redux/types/store';
 
-import UnreadChannel from './unread_channel';
 import {getRecentOrderedUnreadChannelIds} from 'utils/utils';
+
+import UnreadChannel from './unread_channel';
 
 const View = styled.div`
     overflow-y: scroll;
