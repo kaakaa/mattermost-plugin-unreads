@@ -8,10 +8,16 @@ workflows:
   ci:
     jobs:
       - plugin-ci/lint:
+          pre-steps:
+            - run:
+                command: git config --global url."https://git@".insteadOf git://
           filters:
             tags:
               only: /^v.*/
       - plugin-ci/coverage:
+          pre-steps:
+            - run:
+                command: git config --global url."https://git@".insteadOf git://
           filters:
             tags:
               only: /^v.*/
