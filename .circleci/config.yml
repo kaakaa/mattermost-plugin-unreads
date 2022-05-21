@@ -7,11 +7,18 @@ workflows:
   version: 2
   ci:
     jobs:
+      - setup:
+          steps:
+            - run: git config --global url."https://git@".insteadOf git://
       - plugin-ci/lint:
+          requires:
+            - setup
           filters:
             tags:
               only: /^v.*/
       - plugin-ci/coverage:
+          requires:
+            - setup
           filters:
             tags:
               only: /^v.*/
