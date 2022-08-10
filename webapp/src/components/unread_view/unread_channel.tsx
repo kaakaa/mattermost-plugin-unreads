@@ -8,12 +8,13 @@ import {GlobalState} from 'mattermost-redux/types/store';
 import {makeGetPostsInChannel} from 'mattermost-redux/selectors/entities/posts';
 import {getUserIdFromChannelName, isDirectChannel, isGroupChannel} from 'mattermost-redux/utils/channel_utils';
 import {isSystemMessage} from 'mattermost-redux/utils/post_utils';
-import {getChannel, getMyChannelMember} from 'mattermost-redux/selectors/entities/channels';
+import {getChannel, makeGetChannelUnreadCount} from 'mattermost-redux/selectors/entities/channels';
 import {Channel} from 'mattermost-redux/types/channels';
 import {getCurrentTeam, getTeam} from 'mattermost-redux/selectors/entities/teams';
 import {getCurrentUserId, getUser} from 'mattermost-redux/selectors/entities/users';
 import {Team} from 'mattermost-redux/types/teams';
 
+// @ts-ignore
 import UnreadPost from 'components/unread_view/unread_post';
 
 // @ts-ignore
@@ -101,13 +102,14 @@ const UnreadChannel: FC<Props> = (props: Props) => {
     const team = useSelector<GlobalState, Team>((state) => getTeamFromChannel(state, channel));
 
     const channelLink = useSelector<GlobalState, string>((state) => getChannelLink(state, team, channel, currentUserId));
-    const membership = useSelector<GlobalState, any>((state) => getMyChannelMember(state, channelId));
     const allPosts = useSelector<GlobalState, PostWithFormatData[]>((state) => makeGetPostsInChannel()(state, channel.id, -1)!);
+
+    const unreads = useSelector<GlobalState, any>((state) => makeGetChannelUnreadCount()(state, channelId));
+    const unreadCount = unreads.messages;
 
     // There is a case where membership.mention_count is more than one even though unreadCount == 0.
     // e.g.: When someone invite you in new channel, system post message with mention.
     // But ignoring that case is not big deal.
-    const unreadCount = channel.total_msg_count - membership.msg_count;
     if (!allPosts || unreadCount === 0) {
         return <></>;
     }
@@ -169,6 +171,9 @@ const UnreadChannel: FC<Props> = (props: Props) => {
             </UnreadChannelContent>
         </>
     );
+   return (
+    <></>
+   )
 };
 
 export default UnreadChannel;

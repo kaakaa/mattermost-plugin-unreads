@@ -20,15 +20,20 @@
     "noEmit": true,
     "experimentalDecorators": true,
     "jsx": "react",
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "typeRoots": [ "./src/types", "./node_modules/@types"],
+    "paths": {
+      "src": ["src"],
+      "@mattermost/types/*": ["node_modules/@mattermost/types/lib/*"],
+      "mattermost-redux/*": ["node_modules/mattermost-webapp/packages/mattermost-redux/src/*"],
+      "reselect": ["node_modules/mattermost-webapp/packages/reselect/src"]
+    }
   },
   "include": [
-    "src"
+    "./**/*"
   ],
   "exclude": [
     "dist",
-    "node_modules",
     "!node_modules/@types"
   ]
 }
