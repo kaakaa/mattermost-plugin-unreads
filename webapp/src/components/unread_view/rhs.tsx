@@ -4,8 +4,9 @@ import styled from 'styled-components';
 
 import {GlobalState} from '@mattermost/types/store';
 
-import UnreadChannel from './unread_channel';
 import {getUnreadChannelIds} from 'mattermost-redux/selectors/entities/channels';
+
+import UnreadChannel from './unread_channel';
 
 const View = styled.div`
     overflow-y: scroll;
@@ -13,7 +14,6 @@ const View = styled.div`
 
 const UnreadView: FC<null> = () => {
     const unreadChannels = useSelector<GlobalState, string[]>((state) => getUnreadChannelIds(state));// getRecentOrderedUnreadChannelIds(state, null));
-    console.log("unreadChannels", unreadChannels);
     const channels = unreadChannels.slice(0, 5).map((id: string) => (
         <UnreadChannel
             key={id}

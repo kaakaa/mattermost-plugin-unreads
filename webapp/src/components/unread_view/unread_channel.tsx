@@ -171,9 +171,9 @@ const UnreadChannel: FC<Props> = (props: Props) => {
             </UnreadChannelContent>
         </>
     );
-   return (
-    <></>
-   )
+    return (
+        <></>
+    );
 };
 
 export default UnreadChannel;
