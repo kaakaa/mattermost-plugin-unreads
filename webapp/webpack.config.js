@@ -41,7 +41,7 @@ module.exports = {
     resolve: {
         alias: {
             src: path.resolve(__dirname, 'src'),
-            '@mattermost/types': path.resolve(__dirname, './node_modules/mattermost-webapp/packages/types/src/'),
+            '@mattermost/types': path.resolve(__dirname, './node_modules/@mattermost/types/lib/'),
             'mattermost-redux': path.resolve(__dirname, './node_modules/mattermost-webapp/packages/mattermost-redux/src/'),
             reselect: path.resolve(__dirname, './node_modules/mattermost-webapp/packages/reselect/src/index'),
         },
