@@ -22,21 +22,23 @@ export default class Plugin {
         // @see https://developers.mattermost.com/extend/plugins/webapp/reference/
         const {toggleRHSPlugin} = registry.registerRightHandSidebarComponent(UnreadView, 'Unreads');
 
-        registry.registerChannelHeaderButtonAction(
+        if (registry.registerChannelHeaderButtonAction) {
+            registry.registerChannelHeaderButtonAction(
 
-            // TODO: add 'chennel-header_icon--active' when enabled. ref: incident-colleboration plugin.
-            () => (
-                <img
-                    width='24px'
-                    height='24px'
-                    style={{borderRadius: '50%'}}
-                    src={`${iconURL}`}
-                />
-            ),
-            () => store.dispatch(toggleRHSPlugin),
-            'Open Unread Sidebar',
-            'Open Unread Sidebar',
-        );
+                // TODO: add 'chennel-header_icon--active' when enabled. ref: incident-colleboration plugin.
+                () => (
+                    <img
+                        width='24px'
+                        height='24px'
+                        style={{borderRadius: '50%'}}
+                        src={`${iconURL}`}
+                    />
+                ),
+                () => store.dispatch(toggleRHSPlugin),
+                'Open Unread Sidebar',
+                'Open Unread Sidebar',
+            );
+        }
 
         if (registry.registerAppBarComponent) {
             registry.registerAppBarComponent(iconURL, () => store.dispatch(toggleRHSPlugin), 'Open Unread Sidebar');
