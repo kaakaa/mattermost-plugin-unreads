@@ -3,10 +3,9 @@ import {Store, Action} from 'redux';
 
 import {GlobalState} from 'mattermost-redux/types/store';
 
-// eslint-disable-next-line import/no-unresolved
-import {PluginRegistry} from 'types/mattermost-webapp';
+import UnreadView from 'src/components/unread_view/rhs';
 
-import UnreadView from 'components/unread_view/rhs';
+import {PluginRegistry} from './types/mattermost-webapp';
 
 import manifest from './manifest';
 
@@ -29,6 +28,9 @@ export default class Plugin {
 declare global {
     interface Window {
         registerPlugin(id: string, plugin: Plugin): void
+    }
+    type DeepPartial<T> = {
+        [P in keyof T]?: DeepPartial<T[P]>;
     }
 }
 
