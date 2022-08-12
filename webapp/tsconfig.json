@@ -21,7 +21,6 @@
     "experimentalDecorators": true,
     "jsx": "react",
     "baseUrl": ".",
-    "typeRoots": [ "./src/types", "./node_modules/@types"],
     "paths": {
       "src": ["src"],
       "@mattermost/types/*": ["node_modules/@mattermost/types/lib/*"],
