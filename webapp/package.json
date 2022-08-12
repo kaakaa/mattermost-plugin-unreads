@@ -69,6 +69,7 @@
     "core-js": "3.6.5",
     "date-fns": "2.21.1",
     "date-fns-tz": "1.1.4",
+    "dynamic-virtualized-list": "github:mattermost/dynamic-virtualized-list#119db968c96643c7106d4d2c965f05b2e251bc83",
     "mattermost-webapp": "github:mattermost/mattermost-webapp#6dcac2993000139f19c1b018f7fa6b9266973918",
     "react": "16.13.1",
     "react-redux": "7.2.0",
